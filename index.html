@@ -8,85 +8,105 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f8f6f2;
-  --text:#111;
-  --text2:#3a3632;
-  --text3:#7a7570;
-  --border:#c8c4be;
-  --accent:#111;
-  --green:#2e7d52;
-  --green-light:#e6f2ec;
-  --danger:#b83030;
-  --serif:'Noto Serif JP',serif;
-  --sans:'Noto Sans JP',sans-serif;
+  --bg:#f8f6f2;--text:#111;--text2:#3a3632;--text3:#7a7570;
+  --border:#c8c4be;--accent:#111;--green:#2e7d52;--green-light:#e6f2ec;
+  --danger:#b83030;--serif:'Noto Serif JP',serif;--sans:'Noto Sans JP',sans-serif;
 }
 body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center}
 .screen{display:none;width:100%}
-.screen.active{display:flex;justify-content:center;align-items:center;min-height:100vh;padding:48px 24px}
+.screen.active{display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:48px 24px}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-.intro-wrap{width:100%;max-width:600px;animation:fadeIn .5s ease both}
-.intro-title{font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.6;color:var(--text);margin-bottom:24px}
+/* ── Intro ── */
+.intro-wrap{width:100%;max-width:600px;animation:fadeIn .5s ease both;padding-top:12px}
+.intro-title{font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.6;margin-bottom:24px}
 .intro-divider{width:32px;height:2px;background:var(--text3);margin-bottom:24px}
-.intro-notice{font-size:13px;font-weight:400;color:var(--text2);line-height:1.9;margin-bottom:36px}
-.intro-rules{border-top:1px solid var(--border);margin-bottom:36px}
+.intro-notice{font-size:13px;color:var(--text2);line-height:1.9;margin-bottom:36px}
+.intro-rules{border-top:1px solid var(--border);margin-bottom:32px}
 .intro-rule{display:flex;gap:28px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--border)}
 .rule-num{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.06em;min-width:20px;padding-top:2px}
-.rule-text{font-size:13px;font-weight:400;color:var(--text2);line-height:1.9}
+.rule-text{font-size:13px;color:var(--text2);line-height:1.9}
+.intro-fields{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.field-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.req{color:var(--danger);font-size:11px}
+.q-input{width:100%;font-family:var(--sans);font-size:13px;color:var(--text);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:10px 14px;outline:none;transition:border-color .2s,box-shadow .2s;line-height:1.7}
+.q-input::placeholder{color:#b0aca6;font-weight:300}
+.q-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(46,125,82,.12)}
 .start-btn{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.06em;color:#fff;background:var(--accent);border:none;padding:14px 40px;cursor:pointer;border-radius:3px;transition:opacity .2s;display:inline-flex;align-items:center;gap:9px}
 .start-btn:hover{opacity:.82}
 .start-btn svg{transition:transform .2s}
 .start-btn:hover svg{transform:translateX(3px)}
 
-.form-wrap{width:100%;max-width:600px;animation:fadeIn .4s ease both}
+/* ── Form ── */
+.form-wrap{width:100%;max-width:600px;animation:fadeIn .4s ease both;padding-top:12px}
 .timer-row{display:flex;align-items:center;gap:10px;padding-bottom:14px;margin-bottom:10px;border-bottom:2px solid var(--border)}
 .timer-row.warning{border-bottom-color:#e0b0a8}
 .timer-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s ease infinite;flex-shrink:0}
 .timer-row.warning .timer-dot{background:var(--danger)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-.timer-label{font-size:12px;font-weight:400;color:var(--text2);flex:1}
+.timer-label{font-size:12px;color:var(--text2);flex:1}
 .timer-label strong{color:var(--text);font-weight:600}
 .timer-value{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);letter-spacing:.04em;font-family:var(--serif)}
 .timer-row.warning .timer-value{color:var(--danger)}
 .timer-track{height:5px;background:#d8d4ce;border-radius:4px;overflow:hidden;margin-bottom:32px}
 .timer-fill{height:100%;background:var(--green);border-radius:4px;transition:width 1s linear,background .3s}
 .timer-fill.warning{background:var(--danger)}
-
 .form-heading{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:4px}
-.form-sub{font-size:12px;font-weight:400;color:var(--text3);margin-bottom:28px}
+.form-sub{font-size:12px;color:var(--text3);margin-bottom:28px}
 .questions{border-top:2px solid var(--border)}
 .q-block{padding:22px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
-.q-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text)}
+.q-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text);flex-wrap:wrap}
 .q-num{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.06em;min-width:18px}
-.req{color:var(--danger);font-size:11px}
 .q-tags{display:flex;flex-wrap:wrap;gap:6px;padding-left:26px}
-.q-tag{font-size:11px;font-weight:400;color:var(--text2);background:#edeae5;border:1px solid var(--border);border-radius:20px;padding:3px 11px;letter-spacing:.02em}
-.q-input,.q-textarea{width:100%;font-family:var(--sans);font-size:13px;font-weight:400;color:var(--text);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:10px 14px;outline:none;resize:none;transition:border-color .2s,box-shadow .2s;line-height:1.7}
-.q-input::placeholder,.q-textarea::placeholder{color:#b0aca6;font-weight:300}
-.q-input:focus,.q-textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(46,125,82,.12)}
+.q-tag{font-size:11px;color:var(--text2);background:#edeae5;border:1px solid var(--border);border-radius:20px;padding:3px 11px}
+.q-textarea{width:100%;font-family:var(--sans);font-size:13px;color:var(--text);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:10px 14px;outline:none;resize:none;transition:border-color .2s,box-shadow .2s;line-height:1.7}
+.q-textarea::placeholder{color:#b0aca6;font-weight:300}
+.q-textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(46,125,82,.12)}
 .q-foot{display:flex;justify-content:flex-end;margin-top:4px}
-.char{font-size:11px;color:var(--text3);font-weight:400}
+.char{font-size:11px;color:var(--text3)}
 .char.over{color:var(--danger);font-weight:600}
-.submit-area{margin-top:32px;display:flex;justify-content:flex-end}
+.submit-area{margin-top:32px;display:flex;justify-content:flex-end;padding-bottom:48px}
 .submit-btn{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.06em;color:#fff;background:var(--green);border:none;padding:14px 48px;border-radius:3px;cursor:pointer;transition:opacity .2s;display:flex;align-items:center;gap:8px}
 .submit-btn:hover{opacity:.85}
 .submit-btn:disabled{background:#aaa;cursor:not-allowed}
 .spinner{width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── Extra screen ── */
+.radio-group{display:flex;gap:12px;padding-left:26px;flex-wrap:wrap}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer;padding:9px 18px;border:1.5px solid var(--border);border-radius:4px;transition:border-color .2s,background .2s;user-select:none}
+.radio-label:has(input:checked){border-color:var(--green);background:var(--green-light);color:var(--green);font-weight:500}
+.radio-label input{accent-color:var(--green);width:14px;height:14px}
+.schedule-note{font-size:12px;color:var(--text2);line-height:1.8;padding:10px 14px;background:#edeae5;border-radius:4px;margin-bottom:12px}
+.region-block{margin-bottom:8px}
+.region-btn{width:100%;text-align:left;padding:12px 16px;background:#edeae5;border:1.5px solid var(--border);border-radius:4px;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s,border-color .2s}
+.region-btn:hover{background:#e0ddd8}
+.region-btn.open{background:var(--green-light);border-color:var(--green);border-radius:4px 4px 0 0;color:var(--green)}
+.region-arrow{font-size:10px;transition:transform .25s;display:inline-block}
+.region-btn.open .region-arrow{transform:rotate(180deg)}
+.region-options{border:1.5px solid var(--border);border-top:none;border-radius:0 0 4px 4px;background:#fff;overflow:hidden;max-height:0;transition:max-height .35s ease,padding .3s ease}
+.region-options.open{max-height:600px;padding:12px 16px;border-color:var(--green)}
+.check-label{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2);cursor:pointer;padding:7px 0;border-bottom:1px solid #f0ede8;user-select:none}
+.check-label:last-child{border-bottom:none}
+.check-label input{accent-color:var(--green);width:15px;height:15px;flex-shrink:0}
+.unavail-label{font-size:12px;color:var(--text2);line-height:1.8;margin-top:18px;margin-bottom:8px}
+
+/* ── Expire overlay ── */
 .expire-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:999}
 .expire-overlay.show{display:flex}
 .expire-box{background:var(--bg);padding:40px;text-align:center;max-width:320px;width:90%;border:1px solid var(--border);border-radius:4px}
 .expire-title{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:12px}
-.expire-text{font-size:13px;font-weight:400;color:var(--text2);line-height:1.9}
+.expire-text{font-size:13px;color:var(--text2);line-height:1.9}
 
-.done-wrap{width:100%;max-width:600px;text-align:center;animation:fadeIn .5s ease both}
+/* ── Done ── */
+.done-wrap{width:100%;max-width:600px;text-align:center;animation:fadeIn .5s ease both;padding-top:80px}
 .done-title{font-family:var(--serif);font-size:26px;font-weight:600;margin-bottom:16px}
-.done-text{font-size:13px;font-weight:400;color:var(--text2);line-height:1.9}
+.done-text{font-size:13px;color:var(--text2);line-height:1.9}
 </style>
 </head>
 <body>
 
+<!-- ■ 画面1: イントロ（名前・メール入力あり） -->
 <div class="screen active" id="screen-intro">
   <div class="intro-wrap">
     <h1 class="intro-title">テストを始める前に<br>ご確認ください</h1>
@@ -106,6 +126,19 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <span class="rule-text">制限時間は15分です。時間が経過すると送信できなくなります。</span>
       </div>
     </div>
+
+    <!-- 名前・メール入力欄 -->
+    <div class="intro-fields">
+      <div>
+        <div class="field-label">お名前<span class="req">*</span></div>
+        <input class="q-input" id="name" type="text" placeholder="例：山田 太郎">
+      </div>
+      <div>
+        <div class="field-label">メールアドレス<span class="req">*</span></div>
+        <input class="q-input" id="email" type="email" placeholder="例：example@email.com">
+      </div>
+    </div>
+
     <button class="start-btn" onclick="startTest()">
       テストを開始する
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
@@ -115,6 +148,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- ■ 画面2: テストフォーム -->
 <div class="screen" id="screen-form">
   <div class="form-wrap">
     <div class="timer-row" id="timer-row">
@@ -131,12 +165,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <div class="q-block">
         <div class="q-label"><span class="q-num">Q1</span>あなたを表すキーワード<span class="req">*</span></div>
         <div class="q-tags">
-          <span class="q-tag">#スポーツ</span>
-          <span class="q-tag">#地方創生</span>
-          <span class="q-tag">#挑戦者</span>
-          <span class="q-tag">#行動力</span>
-          <span class="q-tag">#ものづくり</span>
-          <span class="q-tag">#教育</span>
+          <span class="q-tag">#スポーツ</span><span class="q-tag">#地方創生</span>
+          <span class="q-tag">#挑戦者</span><span class="q-tag">#行動力</span>
+          <span class="q-tag">#ものづくり</span><span class="q-tag">#教育</span>
           <span class="q-tag">#コミュニティ</span>
         </div>
         <input class="q-input" id="q1" type="text" placeholder="キーワードを入力してください" maxlength="20">
@@ -160,13 +191,88 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 
     <div class="submit-area">
       <button class="submit-btn" id="submit-btn" onclick="submitForm()">
-        <span id="btn-label">送信する</span>
+        <span id="btn-label">次へ進む</span>
         <div class="spinner" id="spinner"></div>
       </button>
     </div>
   </div>
 </div>
 
+<!-- ■ 画面3: 追加質問 -->
+<div class="screen" id="screen-extra">
+  <div class="form-wrap">
+    <div class="form-heading">少しだけ質問させていただきます</div>
+    <div class="form-sub">テストのご回答ありがとうございました。最後にご確認させてください。</div>
+
+    <div class="questions">
+      <!-- Q5 過去参加歴 -->
+      <div class="q-block">
+        <div class="q-label"><span class="q-num">Q5</span>過去にクロスメンターシッププログラムに参加されたことはありますか<span class="req">*</span></div>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="past" value="はい"> はい</label>
+          <label class="radio-label"><input type="radio" name="past" value="いいえ"> いいえ</label>
+        </div>
+      </div>
+
+      <!-- Q6 説明会日程 -->
+      <div class="q-block">
+        <div class="q-label"><span class="q-num">Q6</span>説明会の希望日程<span class="req">*</span></div>
+        <p class="schedule-note">所要時間1時間でZoomを行います。ご希望の日程を選択してください（複数選択可）。</p>
+
+        <!-- 関西 -->
+        <div class="region-block">
+          <button class="region-btn" id="btn-kansai" onclick="toggleRegion('kansai')" type="button">
+            関西
+            <span class="region-arrow" id="arrow-kansai">▼</span>
+          </button>
+          <div class="region-options" id="opts-kansai">
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月21日(月) 19時〜"> 4月21日（月）19時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月21日(月) 21時〜"> 4月21日（月）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月22日(火) 19時〜"> 4月22日（火）19時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月22日(火) 21時〜"> 4月22日（火）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月24日(木) 21時〜"> 4月24日（木）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月26日(土) 19時〜"> 4月26日（土）19時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月26日(土) 20時〜"> 4月26日（土）20時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月26日(土) 21時〜"> 4月26日（土）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関西｜4月29日(火) 21時〜"> 4月29日（火）21時〜</label>
+          </div>
+        </div>
+
+        <!-- 関東 -->
+        <div class="region-block">
+          <button class="region-btn" id="btn-kanto" onclick="toggleRegion('kanto')" type="button">
+            関東
+            <span class="region-arrow" id="arrow-kanto">▼</span>
+          </button>
+          <div class="region-options" id="opts-kanto">
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月19日(日) 20時〜"> 4月19日（日）20時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月19日(日) 21時〜"> 4月19日（日）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月21日(月) 21時〜"> 4月21日（月）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月21日(月) 24時〜"> 4月21日（月）24時〜（4月22日 0時）</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月22日(火) 21時〜"> 4月22日（火）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月23日(水) 20時〜"> 4月23日（水）20時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月23日(水) 21時〜"> 4月23日（水）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月24日(木) 21時〜"> 4月24日（木）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月27日(日) 21時〜"> 4月27日（日）21時〜</label>
+            <label class="check-label"><input type="checkbox" name="schedule" value="関東｜4月29日(火) 21時〜"> 4月29日（火）21時〜</label>
+          </div>
+        </div>
+
+        <p class="unavail-label">上記の日程でご都合が悪い方は、4月20日〜5月1日の間でご都合の良い時間帯をできるだけ多くご記入ください。</p>
+        <textarea class="q-textarea" id="free-schedule" rows="3" placeholder="例：4月25日 20時〜、4月28日 19時〜 など"></textarea>
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <button class="submit-btn" id="extra-submit-btn" onclick="submitExtra()">
+        <span id="extra-btn-label">送信する</span>
+        <div class="spinner" id="extra-spinner"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ■ 画面4: 完了 -->
 <div class="screen" id="screen-done">
   <div class="done-wrap">
     <div class="done-title">送信が完了しました</div>
@@ -174,6 +280,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- 時間切れオーバーレイ -->
 <div class="expire-overlay" id="expire-overlay">
   <div class="expire-box">
     <div class="expire-title">制限時間が終了しました</div>
@@ -183,35 +290,100 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbya1vutNEF52bLMkvDtYDi5F6HqTRxrLeG1mnQnnpon0D-fWHkam9mIOdYFCUTGZZdO/exec';
-let total=900,iv=null;
+let total = 900, iv = null, savedData = {};
 
-function startTest(){
-  document.getElementById('screen-intro').classList.remove('active');
-  document.getElementById('screen-form').classList.add('active');
-  iv=setInterval(()=>{
-    total--;
-    document.getElementById('timer-display').textContent=String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
-    document.getElementById('timer-fill').style.width=(total/900*100)+'%';
-    if(total<=180){document.getElementById('timer-row').classList.add('warning');document.getElementById('timer-fill').classList.add('warning')}
-    if(total<=0){clearInterval(iv);document.getElementById('submit-btn').disabled=true;document.getElementById('expire-overlay').classList.add('show')}
-  },1000);
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
 }
-function upd(id,cid){const l=document.getElementById(id).value.length;const el=document.getElementById(cid);el.textContent=l+' / 100';el.classList.toggle('over',l>=100)}
-async function submitForm(){
-  if(['q1','q2','q3','q4'].some(id=>!document.getElementById(id).value.trim())){alert('すべての設問に回答してください。');return}
-  const btn=document.getElementById('submit-btn');
-  btn.disabled=true;
-  document.getElementById('btn-label').textContent='送信中...';
-  document.getElementById('spinner').style.display='block';
-  try{
-    await fetch(GAS_URL,{method:'POST',body:JSON.stringify({q1:document.getElementById('q1').value,q2:document.getElementById('q2').value,q3:document.getElementById('q3').value,q4:document.getElementById('q4').value})});
-    clearInterval(iv);
-    document.getElementById('screen-form').classList.remove('active');
-    document.getElementById('screen-done').classList.add('active');
-  }catch(err){
-    btn.disabled=false;
-    document.getElementById('btn-label').textContent='送信する';
-    document.getElementById('spinner').style.display='none';
+
+function startTest() {
+  const name  = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  if (!name) { alert('お名前を入力してください。'); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('正しいメールアドレスを入力してください。'); return;
+  }
+  savedData = { name, email };
+  showScreen('screen-form');
+  iv = setInterval(() => {
+    total--;
+    document.getElementById('timer-display').textContent =
+      String(Math.floor(total / 60)).padStart(2, '0') + ':' + String(total % 60).padStart(2, '0');
+    document.getElementById('timer-fill').style.width = (total / 900 * 100) + '%';
+    if (total <= 180) {
+      document.getElementById('timer-row').classList.add('warning');
+      document.getElementById('timer-fill').classList.add('warning');
+    }
+    if (total <= 0) {
+      clearInterval(iv);
+      document.getElementById('submit-btn').disabled = true;
+      document.getElementById('expire-overlay').classList.add('show');
+    }
+  }, 1000);
+}
+
+function upd(id, cid) {
+  const l = document.getElementById(id).value.length;
+  const el = document.getElementById(cid);
+  el.textContent = l + ' / 100';
+  el.classList.toggle('over', l >= 100);
+}
+
+function submitForm() {
+  if (['q1','q2','q3','q4'].some(id => !document.getElementById(id).value.trim())) {
+    alert('すべての設問に回答してください。'); return;
+  }
+  clearInterval(iv);
+  savedData = {
+    ...savedData,
+    q1: document.getElementById('q1').value,
+    q2: document.getElementById('q2').value,
+    q3: document.getElementById('q3').value,
+    q4: document.getElementById('q4').value,
+  };
+  showScreen('screen-extra');
+}
+
+function toggleRegion(region) {
+  const opts = document.getElementById('opts-' + region);
+  const btn  = document.getElementById('btn-' + region);
+  const isOpen = opts.classList.contains('open');
+  opts.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+
+async function submitExtra() {
+  const pastEl = document.querySelector('input[name="past"]:checked');
+  if (!pastEl) { alert('Q5に回答してください。'); return; }
+
+  const checked = [...document.querySelectorAll('input[name="schedule"]:checked')].map(c => c.value);
+  const freeSchedule = document.getElementById('free-schedule').value.trim();
+  if (checked.length === 0 && !freeSchedule) {
+    alert('説明会の希望日程を選択するか、ご都合の良い時間帯をご記入ください。'); return;
+  }
+
+  const extraBtn = document.getElementById('extra-submit-btn');
+  extraBtn.disabled = true;
+  document.getElementById('extra-btn-label').textContent = '送信中...';
+  document.getElementById('extra-spinner').style.display = 'block';
+
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        ...savedData,
+        past: pastEl.value,
+        schedule: checked.join(' / '),
+        freeSchedule,
+      }),
+    });
+    showScreen('screen-done');
+  } catch (err) {
+    extraBtn.disabled = false;
+    document.getElementById('extra-btn-label').textContent = '送信する';
+    document.getElementById('extra-spinner').style.display = 'none';
     alert('送信に失敗しました。もう一度お試しください。');
   }
 }
