@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>選考フォーム</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f6f2;
+  --text:#111;
+  --text2:#3a3632;
+  --text3:#7a7570;
+  --border:#c8c4be;
+  --accent:#111;
+  --green:#2e7d52;
+  --green-light:#e6f2ec;
+  --danger:#b83030;
+  --serif:'Noto Serif JP',serif;
+  --sans:'Noto Sans JP',sans-serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center}
+.screen{display:none;width:100%}
+.screen.active{display:flex;justify-content:center;align-items:center;min-height:100vh;padding:48px 24px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.intro-wrap{width:100%;max-width:600px;animation:fadeIn .5s ease both}
+.intro-title{font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.6;color:var(--text);margin-bottom:24px}
+.intro-divider{width:32px;height:2px;background:var(--text3);margin-bottom:24px}
+.intro-notice{font-size:13px;font-weight:400;color:var(--text2);line-height:1.9;margin-bottom:36px}
+.intro-rules{border-top:1px solid var(--border);margin-bottom:36px}
+.intro-rule{display:flex;gap:28px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--border)}
+.rule-num{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.06em;min-width:20px;padding-top:2px}
+.rule-text{font-size:13px;font-weight:400;color:var(--text2);line-height:1.9}
+.start-btn{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.06em;color:#fff;background:var(--accent);border:none;padding:14px 40px;cursor:pointer;border-radius:3px;transition:opacity .2s;display:inline-flex;align-items:center;gap:9px}
+.start-btn:hover{opacity:.82}
+.start-btn svg{transition:transform .2s}
+.start-btn:hover svg{transform:translateX(3px)}
+
+.form-wrap{width:100%;max-width:600px;animation:fadeIn .4s ease both}
+.timer-row{display:flex;align-items:center;gap:10px;padding-bottom:14px;margin-bottom:10px;border-bottom:2px solid var(--border)}
+.timer-row.warning{border-bottom-color:#e0b0a8}
+.timer-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s ease infinite;flex-shrink:0}
+.timer-row.warning .timer-dot{background:var(--danger)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.timer-label{font-size:12px;font-weight:400;color:var(--text2);flex:1}
+.timer-label strong{color:var(--text);font-weight:600}
+.timer-value{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);letter-spacing:.04em;font-family:var(--serif)}
+.timer-row.warning .timer-value{color:var(--danger)}
+.timer-track{height:5px;background:#d8d4ce;border-radius:4px;overflow:hidden;margin-bottom:32px}
+.timer-fill{height:100%;background:var(--green);border-radius:4px;transition:width 1s linear,background .3s}
+.timer-fill.warning{background:var(--danger)}
+
+.form-heading{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:4px}
+.form-sub{font-size:12px;font-weight:400;color:var(--text3);margin-bottom:28px}
+.questions{border-top:2px solid var(--border)}
+.q-block{padding:22px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+.q-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text)}
+.q-num{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.06em;min-width:18px}
+.req{color:var(--danger);font-size:11px}
+.q-tags{display:flex;flex-wrap:wrap;gap:6px;padding-left:26px}
+.q-tag{font-size:11px;font-weight:400;color:var(--text2);background:#edeae5;border:1px solid var(--border);border-radius:20px;padding:3px 11px;letter-spacing:.02em}
+.q-input,.q-textarea{width:100%;font-family:var(--sans);font-size:13px;font-weight:400;color:var(--text);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:10px 14px;outline:none;resize:none;transition:border-color .2s,box-shadow .2s;line-height:1.7}
+.q-input::placeholder,.q-textarea::placeholder{color:#b0aca6;font-weight:300}
+.q-input:focus,.q-textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(46,125,82,.12)}
+.q-foot{display:flex;justify-content:flex-end;margin-top:4px}
+.char{font-size:11px;color:var(--text3);font-weight:400}
+.char.over{color:var(--danger);font-weight:600}
+.submit-area{margin-top:32px;display:flex;justify-content:flex-end}
+.submit-btn{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.06em;color:#fff;background:var(--green);border:none;padding:14px 48px;border-radius:3px;cursor:pointer;transition:opacity .2s;display:flex;align-items:center;gap:8px}
+.submit-btn:hover{opacity:.85}
+.submit-btn:disabled{background:#aaa;cursor:not-allowed}
+.spinner{width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.expire-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:999}
+.expire-overlay.show{display:flex}
+.expire-box{background:var(--bg);padding:40px;text-align:center;max-width:320px;width:90%;border:1px solid var(--border);border-radius:4px}
+.expire-title{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:12px}
+.expire-text{font-size:13px;font-weight:400;color:var(--text2);line-height:1.9}
+
+.done-wrap{width:100%;max-width:600px;text-align:center;animation:fadeIn .5s ease both}
+.done-title{font-family:var(--serif);font-size:26px;font-weight:600;margin-bottom:16px}
+.done-text{font-size:13px;font-weight:400;color:var(--text2);line-height:1.9}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="screen-intro">
+  <div class="intro-wrap">
+    <h1 class="intro-title">テストを始める前に<br>ご確認ください</h1>
+    <div class="intro-divider"></div>
+    <p class="intro-notice">以下の内容をよくお読みのうえ、時間に余裕のある状況で開始してください。</p>
+    <div class="intro-rules">
+      <div class="intro-rule">
+        <span class="rule-num">01</span>
+        <span class="rule-text">回答内容は選考の合否判断のみに使用されます。それ以外の目的に使用されることはありません。</span>
+      </div>
+      <div class="intro-rule">
+        <span class="rule-num">02</span>
+        <span class="rule-text">このテストは一度だけしか受けられません。開始後は途中でやめないでください。</span>
+      </div>
+      <div class="intro-rule">
+        <span class="rule-num">03</span>
+        <span class="rule-text">制限時間は15分です。時間が経過すると送信できなくなります。</span>
+      </div>
+    </div>
+    <button class="start-btn" onclick="startTest()">
+      テストを開始する
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+        <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="screen" id="screen-form">
+  <div class="form-wrap">
+    <div class="timer-row" id="timer-row">
+      <div class="timer-dot"></div>
+      <span class="timer-label">このフォームは開いてから <strong>15分以内</strong> に送信してください。</span>
+      <span class="timer-value" id="timer-display">15:00</span>
+    </div>
+    <div class="timer-track"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+
+    <div class="form-heading">選考設問</div>
+    <div class="form-sub">各設問に回答し、制限時間内に送信してください。</div>
+
+    <div class="questions">
+      <div class="q-block">
+        <div class="q-label"><span class="q-num">Q1</span>あなたを表すキーワード<span class="req">*</span></div>
+        <div class="q-tags">
+          <span class="q-tag">#スポーツ</span>
+          <span class="q-tag">#地方創生</span>
+          <span class="q-tag">#挑戦者</span>
+          <span class="q-tag">#行動力</span>
+          <span class="q-tag">#ものづくり</span>
+          <span class="q-tag">#教育</span>
+          <span class="q-tag">#コミュニティ</span>
+        </div>
+        <input class="q-input" id="q1" type="text" placeholder="キーワードを入力してください" maxlength="20">
+      </div>
+      <div class="q-block">
+        <div class="q-label"><span class="q-num">Q2</span>参加希望理由<span class="req">*</span></div>
+        <textarea class="q-textarea" id="q2" rows="2" maxlength="100" placeholder="100字以内でご記入ください。" oninput="upd('q2','c2')"></textarea>
+        <div class="q-foot"><span class="char" id="c2">0 / 100</span></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label"><span class="q-num">Q3</span>将来像と取り組み<span class="req">*</span></div>
+        <textarea class="q-textarea" id="q3" rows="2" maxlength="100" placeholder="100字以内でご記入ください。" oninput="upd('q3','c3')"></textarea>
+        <div class="q-foot"><span class="char" id="c3">0 / 100</span></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label"><span class="q-num">Q4</span>目標設定の経験<span class="req">*</span></div>
+        <textarea class="q-textarea" id="q4" rows="2" maxlength="100" placeholder="100字以内でご記入ください。" oninput="upd('q4','c4')"></textarea>
+        <div class="q-foot"><span class="char" id="c4">0 / 100</span></div>
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()">
+        <span id="btn-label">送信する</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-done">
+  <div class="done-wrap">
+    <div class="done-title">送信が完了しました</div>
+    <p class="done-text">ご回答ありがとうございました。<br>選考結果は後日ご連絡いたします。</p>
+  </div>
+</div>
+
+<div class="expire-overlay" id="expire-overlay">
+  <div class="expire-box">
+    <div class="expire-title">制限時間が終了しました</div>
+    <p class="expire-text">15分が経過したため、送信ができなくなりました。<br>最初からやり直してください。</p>
+  </div>
+</div>
+
+<script>
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbya1vutNEF52bLMkvDtYDi5F6HqTRxrLeG1mnQnnpon0D-fWHkam9mIOdYFCUTGZZdO/exec';
+let total=900,iv=null;
+
+function startTest(){
+  document.getElementById('screen-intro').classList.remove('active');
+  document.getElementById('screen-form').classList.add('active');
+  iv=setInterval(()=>{
+    total--;
+    document.getElementById('timer-display').textContent=String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
+    document.getElementById('timer-fill').style.width=(total/900*100)+'%';
+    if(total<=180){document.getElementById('timer-row').classList.add('warning');document.getElementById('timer-fill').classList.add('warning')}
+    if(total<=0){clearInterval(iv);document.getElementById('submit-btn').disabled=true;document.getElementById('expire-overlay').classList.add('show')}
+  },1000);
+}
+function upd(id,cid){const l=document.getElementById(id).value.length;const el=document.getElementById(cid);el.textContent=l+' / 100';el.classList.toggle('over',l>=100)}
+async function submitForm(){
+  if(['q1','q2','q3','q4'].some(id=>!document.getElementById(id).value.trim())){alert('すべての設問に回答してください。');return}
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;
+  document.getElementById('btn-label').textContent='送信中...';
+  document.getElementById('spinner').style.display='block';
+  try{
+    await fetch(GAS_URL,{method:'POST',body:JSON.stringify({q1:document.getElementById('q1').value,q2:document.getElementById('q2').value,q3:document.getElementById('q3').value,q4:document.getElementById('q4').value})});
+    clearInterval(iv);
+    document.getElementById('screen-form').classList.remove('active');
+    document.getElementById('screen-done').classList.add('active');
+  }catch(err){
+    btn.disabled=false;
+    document.getElementById('btn-label').textContent='送信する';
+    document.getElementById('spinner').style.display='none';
+    alert('送信に失敗しました。もう一度お試しください。');
+  }
+}
+</script>
+</body>
+</html>
